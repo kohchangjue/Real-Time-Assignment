@@ -130,7 +130,7 @@ class RMS:
                             drone.ccw(process.command[1])
                         if command == 'forward':
                             # print('forward',10)
-                            drone.forward(process.command[1])
+                            drone.forward(10)
                         if command == 'backward':
                             # print('forward',10)
                             drone.back(process.command[1])
