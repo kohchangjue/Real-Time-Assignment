@@ -22,30 +22,34 @@ interrupt include (keyboard,obstacle observer) --->aperiodic
 '''
 
 # Flight path to Checkpoint 1 to 5 and back to Checkpoint 0 sequentially
+predefined_speed=10 #10m/s
 task = [
+    ['getvid'],
     ['takeoff'],
     ["ccw", 150],
-    ["forward", 50],
+    ["forward", predefined_speed],
     ["cw", 90],
-    ["forward", 100],
+    ["forward", predefined_speed],
     ["ccw", 90],
-    ["forward", 80],
+    ["forward", predefined_speed],
     ["ccw", 90],
-    ["forward", 40],
+    ["forward", predefined_speed],
     ["ccw", 90],
-    ["forward", 40],
+    ["forward", predefined_speed],
     ["cw", 90],
-    ["forward", 60],
+    ["forward", predefined_speed],
     ["ccw", 90],
-    ["forward", 40],
+    ["forward", predefined_speed],
     ["ccw", 150],
-    ["forward", 50] #to base
+    ["forward", predefined_speed] #to base
 ]
 num_processors = 1
 
-execution_times = [1,1,1,1, 10,1, 8, 1,4, 1,4, 1,6,1,4,1,5]
-periods = [75,75, 75, 75, 75, 75, 75, 75,75,75,75,75, 75, 75,75,75,75]
-arrive_time = [0,1,2,3,4,14,15,23,24,28,29,33,34,40,41,45,46]
+execution_times = [1,1,1,1,1, round(100/predefined_speed),1, round(80/predefined_speed),
+                   1,round(40/predefined_speed), 1,round(40/predefined_speed), 1,round(60/predefined_speed),
+                   1,round(40/predefined_speed),1,round(50/predefined_speed)]
+periods = [3,75,75, 75, 75, 75, 75, 75, 75,75,75,75,75, 75, 75,75,75,75]
+arrive_time = [0,0,1,2,3,4,14,15,23,24,28,29,33,34,40,41,45,46]
 READY_STATUS = 0
 RUNNING_STATUS = 1
 drone = Simulator()
@@ -101,7 +105,7 @@ class RMS:
 
         # this list will keep track of which process have met thier first deadline
         ## if all processes met their first deadline in the first max period, then we can stop early
-        # deadlines_met = [False] * len(execution_times)
+        #deadlines_met = [False] * len(execution_times)
 
         running_process_set = {}
         # now we simulate processes running
@@ -130,7 +134,8 @@ class RMS:
                             drone.ccw(process.command[1])
                         if command == 'forward':
                             # print('forward',10)
-                            drone.forward(10)
+                            # drone.forward(10)
+                            drone.forward(process.command[1])
                         if command == 'backward':
                             # print('forward',10)
                             drone.back(process.command[1])
@@ -142,6 +147,8 @@ class RMS:
                             drone.up(process.command[1])
                         if command == 'down':
                             drone.down(process.command[1])
+                        if command == 'getvid':
+                            print("getting video...")
 
                     process.time_left -= 1
 
@@ -157,9 +164,9 @@ class RMS:
             for process in processes:
                 if process.deadline <= time:
                     print("deadline missed for process", process.id, "at time", time)
-                    return
+                    pass
 
-            # check if all deadlines have been met once in thie first period
+            # check if all deadlines have been met once in the first timeline
             if sum(1 for met in deadlines_met if not met) == 0:
                 print("all deadlines met within", time, "milliseconds with", num_processors, "processors")
                 return

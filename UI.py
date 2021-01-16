@@ -5,18 +5,17 @@ from time import sleep
 import Schedular2 as schedular
 import threading
 
-
 root = Tkinter.Tk()
 move_by = 10
 drone = schedular.drone
 root.title("GUI Example")
-
+task_id=5000
 rms=schedular.RMS()
 # Functions
 def increase_movement_speed():
 	global move_by
 	move_by  += 2
-	print("New speed : " + move_by)
+	print("New speed : " + str(move_by))
 
 def decrease_movement_speed():
 	global move_by
@@ -24,52 +23,71 @@ def decrease_movement_speed():
 		pass
 	else:
 		move_by -= 2
-	print("New speed : " + move_by)
+	print("New speed : " + str(move_by))
 
 def take_off():
+	global task_id
 	print("Taking off")
-	rms.insertInterruptTask(rms.current_time,6001,["takeoff"])
+	rms.insertInterruptTask(rms.current_time,task_id,["takeoff"])
+	task_id=task_id+1
 	sleep(3)
 
 def land():
+	global task_id
 	print("Landing")
-	rms.insertInterruptTask(rms.current_time,6002,["land"])
+	rms.insertInterruptTask(rms.current_time,task_id,["land"])
+	task_id=task_id+1
 	# sys.exit()
 
 def go_up():
+	global task_id
 	print("Going Up")
-	rms.insertInterruptTask(rms.current_time,5001,["up", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["up", 20])
+	task_id=task_id+1
 
 def go_down():
+	global task_id
 	print("Going Down")
-	rms.insertInterruptTask(rms.current_time,5002,["down", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["down", 20])
+	task_id=task_id+1
 
 def go_left():
+	global task_id
 	print("Going Left")
-	rms.insertInterruptTask(rms.current_time,1001,["left", move_by])
-	rms.insertInterruptTask(rms.current_time,1002,["right", round(move_by/10)])
+	rms.insertInterruptTask(rms.current_time,task_id,["left", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["right", round(move_by/10)])
+	task_id=task_id+1
 
 def go_right():
+	global task_id
 	print("Going Right")
-	rms.insertInterruptTask(rms.current_time,2001,["right", move_by])
-	rms.insertInterruptTask(rms.current_time,2002,["left", round(move_by/10)])
+	rms.insertInterruptTask(rms.current_time,task_id,["right", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["left", round(move_by/10)])
+	task_id=task_id+1
 
 def go_forward():
+	global task_id
 	print("Going Forward")
-	rms.insertInterruptTask(rms.current_time,3001,["forward", move_by])    
-
+	rms.insertInterruptTask(rms.current_time,task_id,["forward", move_by])
+	task_id=task_id+1
 
 def go_backward():
+	global task_id
 	print("Going Backward")
-	rms.insertInterruptTask(rms.current_time,3002,["backward", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["backward", move_by])
+	task_id=task_id+1
 
 def rotate_clockwise():
+	global task_id
 	print("Rotating clockwise")
-	rms.insertInterruptTask(rms.current_time,4001,["cw", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["cw", move_by])
+	task_id=task_id+1
 
 def rotate_counter_clockwise():
+	global task_id
 	print("Rotating counter clockwise")
-	rms.insertInterruptTask(rms.current_time,4002,["ccw", move_by])
+	rms.insertInterruptTask(rms.current_time,task_id,["ccw", move_by])
+	task_id=task_id+1
 
 def predefined_route():
 	rms.buildSchedule()

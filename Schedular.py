@@ -6,10 +6,9 @@ Created on Sun Oct 25 15:05:00 2020
 
 from FEL import FEL
 
-num_processors = 1
-execution_times = [160, 48, 40, 48, 56, 80, 10]
+num_processors = 2
+execution_times = [160, 48, 40, 48, 56, 80 ,10]
 periods = [1600, 2560, 120, 96, 168, 240, 100]
-
 READY_STATUS = 0
 RUNNING_STATUS = 1
 
@@ -56,7 +55,6 @@ class RMS:
         running_process_set = {}
         # now we simulate processes running
         for time in range(0, max_period):
-            print('time',time,'------------------------')
             self.current_time = time
 
             # decrement time left for each running process
